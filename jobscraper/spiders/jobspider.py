@@ -6,35 +6,38 @@ from scrapy.linkextractors import LinkExtractor
 
 class JobscraperSpider(scrapy.Spider):
     name ='jobspider'
-    start_urls = ['https://cccc/bolsa/ofertas?oferta=&lugar=&categoria=']
+    start_urls = ['https://mott.pe/bolsa/ofertas?oferta=&lugar=&categoria=']
 
     def parse(self, response):
         job_detail = response.xpath('//div[@class="list"]/div/a')
         yield from response.follow_all(job_detail, self.parse_jobspider)
 
     def parse(self, response):
-        items = JobscraperItem()
+        job_list = response.xpath('//div[@itemtype="http://schema.org/JobPosting"]')
 
-        job_title = response.xpath('//h1/text()').extract()
-        company = response.xpath('//h2/b/text()').extract()
-        company_url = response.xpath('//div[@class="pull-left"]/a/text()').extract()
-        description = response.xpath('//div[@class="aviso"]/text()').extract()
-        salary = response.xpath('//div[@id="aviso"]/p[1]/text()').extract()
-        city = response.xpath('//div[@id="aviso"]/p[2]/text()').extract()
-        district = response.xpath('//div[@id="aviso"]/p[5]/text()').extract()
-        publication_date = response.xpath('//div[@id="publicado"]/text()').extract()
-        apply = response.xpath('//p[@class="text-center"]/b/text()').extract()
-        job_type = response.xpath('//div[@id="resumen"]/p[3]/text()').extract()
+        for job in job_list:
+            item = JobscraperItem()
 
-        items['job_title'] = job_title
-        items['company'] = company
-        items['company_url'] = company_url
-        items['description'] = description
-        items['salary'] = salary
-        items['city'] = city
-        items['district'] = district
-        items['publication_date'] = publication_date
-        items['apply'] = apply
-        items['job_type'] = job_type
+            job_title = job.xpath('//h1/text()').extract()
+            company = job.xpath('//h2/b/text()').extract()
+            company_url = job.xpath('//div[@class="pull-left"]/a/text()').extract()
+            description = job.xpath('//div[@class="aviso"]/text()').extract()
+            salary = job.xpath('//div[@id="aviso"]/p[1]/text()').extract()
+            city = job.xpath('//div[@id="aviso"]/p[2]/text()').extract()
+            district = job.xpath('//div[@id="aviso"]/p[5]/text()').extract()
+            publication_date = job.xpath('//div[@id="publicado"]/text()').extract()
+            apply = job.xpath('//p[@class="text-center"]/b/text()').extract()
+            job_type = job.xpath('//div[@id="resumen"]/p[3]/text()').extract()
 
-        yield items
+            item['job_title'] = job_title
+            item['company'] = company
+            item['company_url'] = company_url
+            item['description'] = description
+            item['salary'] = salary
+            item['city'] = city
+            item['district'] = district
+            item['publication_date'] = publication_date
+            item['apply'] = apply
+            item['job_type'] = job_type
+
+            yield item
