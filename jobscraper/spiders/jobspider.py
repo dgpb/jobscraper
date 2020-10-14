@@ -6,7 +6,7 @@ from scrapy.linkextractors import LinkExtractor
 
 class JobscraperSpider(scrapy.Spider):
     name ='jobspider'
-    start_urls = ['https://cccc/bolsa/ofertas?oferta=&lugar=&categoria=']
+    start_urls = ['https://mott.pe/bolsa/ofertas?oferta=&lugar=&categoria=']
 
     def parse(self, response):
         job_detail = response.xpath('//div[@class="list"]/div/a')
