@@ -13,9 +13,6 @@ class JobscraperSpider(scrapy.Spider):
         yield from response.follow_all(job_detail, self.parse_jobspider)
 
     def parse(self, response):
-        with open('a.html', 'w') as handle:
-            handle.write(response.text)
-
         job_list = response.xpath('//div[@itemtype="http://schema.org/JobPosting"]')
 
         for job in job_list:
