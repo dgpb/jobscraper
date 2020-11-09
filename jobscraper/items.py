@@ -5,6 +5,9 @@
 
 import scrapy
 
+def remove_nt(value):
+    return value.replace('\t', ' ').replace('\n', ' ')
+
 
 class JobscraperItem(scrapy.Item):
     # define the fields for your item here like:
@@ -17,7 +20,7 @@ class JobscraperItem(scrapy.Item):
     city = scrapy.Field()
     district = scrapy.Field()
     publication_date = scrapy.Field()
-    apply = scrapy.Field()
+    job_url = scrapy.Field()
     job_type = scrapy.Field()
 
     pass

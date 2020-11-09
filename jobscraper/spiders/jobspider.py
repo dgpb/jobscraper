@@ -11,7 +11,7 @@ class JobscraperSpider(CrawlSpider):
 
     rules = (
 
-        Rule(LinkExtractor(allow=('/bolsa/166',)), follow=True, callback='parse_item'),
+        Rule(LinkExtractor(allow=('/bolsa/16',)), follow=True, callback='parse_item'),
 
     )
 
@@ -26,8 +26,9 @@ class JobscraperSpider(CrawlSpider):
         city = response.xpath('//div[@id="aviso"]/p[2]/text()').extract()
         district = response.xpath('//div[@id="aviso"]/p[5]/text()').extract()
         publication_date = response.xpath('//div[@id="publicado"]/text()').extract()
-        apply = response.xpath('//p[@class="text-center"]/b/text()').extract()
+        job_url = response.url
         job_type = response.xpath('//div[@id="resumen"]/p[3]/text()').extract()
+        #apply = response.xpath('//p[@class="text-center"]/b/text()').extract()
 
         items['job_title'] = job_title
         items['company'] = company
@@ -37,7 +38,8 @@ class JobscraperSpider(CrawlSpider):
         items['city'] = city
         items['district'] = district
         items['publication_date'] = publication_date
-        items['apply'] = apply
+        items['job_url'] = job_url
         items['job_type'] = job_type
+        #items['apply'] = apply
 
         yield items
