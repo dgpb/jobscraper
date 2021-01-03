@@ -7,7 +7,7 @@ from scrapy.linkextractors import LinkExtractor
 
 class JobartscraperSpider(CrawlSpider):
     name ='jobarts_spider'
-    start_urls = ['https://job-arts.com/jobs/']
+    start_urls = ['https://job-arts.com/jobs/?page=2']
 
     rules = (
 
